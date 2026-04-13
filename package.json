@@ -1,0 +1,12 @@
+{
+	"name": "qrbook",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"author": "Dmitry Maksimetny <dmitry@maksimetny.com>",
+	"license": "MIT",
+	"keywords": [
+		"qr",
+		"e-mail"
+	]
+}

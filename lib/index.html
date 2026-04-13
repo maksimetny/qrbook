@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="color-scheme" content="light dark">
+	<meta name="theme-color" media="(prefers-color-scheme: light)" content="white">
+	<meta name="theme-color" media="(prefers-color-scheme: dark)" content="black">
+	<title>QR BOOK</title>
+	<link rel="icon" href="favicon.svg" type="image/svg+xml">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		rel="preload"
+		as="style"
+		href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+		onload="this.rel='stylesheet'"
+	/>
+	<link rel="stylesheet" href="styles.css">
+	<script type="module" src="main.js" defer></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+		integrity="sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU"
+		crossorigin="anonymous"
+		referrerpolicy="no-referrer"
+	></script>
+</head>
+
+<body class="app">
+	<header class="titlebar app__titlebar">
+		<h1 class="title"><a href="/">QR BOOK</a></h1>
+
+		<div class="titlebar__actions no-print">
+			<div class="tabs" id="color-scheme-switcher">
+				<button id="light" class="btn" title="Светлая тема">
+					<svg class="btn__icon"><use href="lucide.svg#sun" /></svg>
+				</button>
+				<button id="device" class="btn" title="Автоматическое переключение темы">
+					<svg class="btn__icon"><use href="lucide.svg#sun-moon" /></svg>
+				</button>
+				<button id="dark" class="btn" title="Темная тема">
+					<svg class="btn__icon"><use href="lucide.svg#moon" /></svg>
+				</button>
+			</div>
+
+			<!--
+				<button class="btn" title="Поделиться">
+					<svg class="btn__icon"><use href="lucide.svg#share-2" /></svg>
+				</button>
+				<button class="btn" title="Печать">
+					<svg class="btn__icon"><use href="lucide.svg#printer" /></svg>
+				</button>
+			-->
+		</div>
+	</header>
+	<hr class="separator no-print" />
+	<main class="book">
+		<div class="book__list"></div>
+
+		<div class="actionbar no-print">
+			<!--
+			<div class="actionbar">
+				<button class="btn">
+					<svg class="btn__icon"><use href="lucide.svg#plus" /></svg>
+					Добавить запись
+				</button>
+			</div>
+			-->
+			<div class="actionbar">
+				<button class="btn" onClick="document.querySelector('input#fileInput')?.click()">
+					<svg class="btn__icon"><use href="lucide.svg#file-up" /></svg>
+					Импорт
+				</button>
+				<button class="btn" onClick="qrBook.exportFile()">
+					<svg class="btn__icon"><use href="lucide.svg#file-down" /></svg>
+					Экспорт
+				</button>
+			</div>
+		</div>
+		<div class="qrcode">
+			<div class="qrcode__msg"></div>
+			<div class="qrcode__region"></div>
+		</div>
+	</main>
+	<input type="file" id="fileInput" accept=".csv,text/csv" style="display:none" onChange="qrBook.handleFile(event)">
+</body>
+
+</html>
