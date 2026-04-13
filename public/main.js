@@ -194,7 +194,8 @@ hash$.subscribe((hash) => {
 	const msg = document.querySelector('.qrcode .qrcode__msg');
 	/** @type {HTMLDivElement?} */
 	const region = document.querySelector('.qrcode .qrcode__region');
-	const url = `${location.origin}#${hash}`;
+	const pathname = location.pathname;
+	const url = `${location.origin + (pathname.endsWith('/') ? pathname.slice(0, -1) : pathname)}#${hash}`;
 
 	if (url.length > MAX_QR_CHARS) {
 		qrcode.clear();
