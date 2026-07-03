@@ -228,10 +228,29 @@ window.qrBook = {
 	handleFile(e) {
 		/** @type {HTMLInputElement?} */
 		const fileInput = e.target;
+
 		const file = fileInput?.files?.item(0);
 		if (!file) return;
+
 		const reader = new FileReader();
-		reader.onload = progress => importSheet(progress.target.result);
-		reader.readAsText(file, 'utf-8');
+
+		reader.onload = (progress) => {
+			const bytes = new Uint8Array(progress.target.result);
+			let text;
+
+			try {
+				const decoder = new TextDecoder('utf-8', { fatal: true });
+				text = decoder.decode(bytes);
+			} catch (err) {
+				console.warn(err);
+				// OEM866 (CP866)
+				const decoder = new TextDecoder('ibm866');
+				text = decoder.decode(bytes);
+			}
+
+			importSheet(text);
+		};
+
+		reader.readAsArrayBuffer(file);
 	}
 };
