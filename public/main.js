@@ -156,9 +156,12 @@ sheet$.subscribe(async ({ columns, rows }) => {
 
 hash$.subscribe(hash => window.location.hash = hash);
 
-/** @param {string} content */
-const importSheet = (content) => {
-	sheet$.next(csv.deserialize(content));
+/**
+@param {string} content
+@param {string} separator
+*/
+const importSheet = (content, separator) => {
+	sheet$.next(csv.deserialize(content, separator));
 };
 
 const getState = async () => {
@@ -226,6 +229,12 @@ window.qrBook = {
 	},
 	/** @param {Event} e */
 	handleFile(e) {
+		const charset = prompt('Кодировка\n\nВозможные варианты:\nutf-8\nwindows-1251\nibm866', 'utf-8');
+		if (!charset) return;
+
+		const separator = prompt('Разделитель (символ разделяющий ячейки)', ';');
+		if (!separator) return;
+
 		/** @type {HTMLInputElement?} */
 		const fileInput = e.target;
 
@@ -234,23 +243,8 @@ window.qrBook = {
 
 		const reader = new FileReader();
 
-		reader.onload = (progress) => {
-			const bytes = new Uint8Array(progress.target.result);
-			let text;
+		reader.onload = (progress) => importSheet(progress.target.result, separator);
 
-			try {
-				const decoder = new TextDecoder('utf-8', { fatal: true });
-				text = decoder.decode(bytes);
-			} catch (err) {
-				console.warn(err);
-				// OEM866 (CP866)
-				const decoder = new TextDecoder('ibm866');
-				text = decoder.decode(bytes);
-			}
-
-			importSheet(text);
-		};
-
-		reader.readAsArrayBuffer(file);
+		reader.readAsText(file, charset);
 	}
 };
